@@ -5,21 +5,22 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 module.exports.createProduct = async (event) => {
     const product = JSON.parse(event.body);
+    const id = uuidv4();
     const productsParams = {
         TableName: "products",
         Item: {
             title: product.title,
             description: product.description,
             price: product.price,
-            id: uuidv4()
+            id
         }
     };
 
     const stocksParams = {
         TableName: "stocks",
         Item: {
-            id: uuidv4(),
-            count: product.count ?? 1
+            product_id: id,
+            count: product.count || 1
         }
     };
 
