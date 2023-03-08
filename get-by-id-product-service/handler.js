@@ -4,18 +4,21 @@ module.exports.getProductById = async (event) => {
     const { productId } = event.pathParameters;
     const products = [
         {
-            id: '1',
-            productName: "Book1",
+            id: 1,
+            title: "Book1",
+            description: "The book is good",
             price: 1004
         },
         {
-            id: '2',
-            productName: "Book2",
+            id: 2,
+            title: "Book2",
+            description: "The book is sad",
             price: 1005
         },
         {
-            id: '3',
-            productName: "Book3",
+            id: 3,
+            title: "Book3",
+            description: "The book is nice",
             price: 1005
         },
     ];

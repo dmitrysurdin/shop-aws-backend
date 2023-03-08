@@ -12,17 +12,20 @@ module.exports.getProductsList = async () => {
             body: JSON.stringify([
                 {
                     id: 1,
-                    productName: "Book1",
+                    title: "Book1",
+                    description: "The book is good",
                     price: 1004
                 },
                 {
                     id: 2,
-                    productName: "Book2",
+                    title: "Book2",
+                    description: 'The book is sad',
                     price: 1005
                 },
                 {
                     id: 3,
-                    productName: "Book3",
+                    title: "Book3",
+                    description: "The book is nice",
                     price: 1005
                 },
             ])
