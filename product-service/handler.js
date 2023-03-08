@@ -1,17 +1,19 @@
 "use strict";
-const AWS = require('aws-sdk');
-AWS.config.update({ region: 'eu-west-1' });
+const AWS = require("aws-sdk");
+AWS.config.update({ region: "eu-west-1" });
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 module.exports.getProductsList = async () => {
     try {
-        const products = await dynamodb.scan({ TableName: 'products', }).promise();
-        const stocks = await dynamodb.scan({ TableName: 'stocks', }).promise();
+        const products = await dynamodb.scan({ TableName: "products", }).promise();
+        const stocks = await dynamodb.scan({ TableName: "stocks", }).promise();
         const result = products.Items.reduce((acc, product) => {
             const stockItem = stocks.Items.find(stock => stock.product_id === product.id);
             if (stockItem) {
-                acc.push({ ...product, ...stockItem });
+                acc.push({ ...product, count: stockItem.count });
+            } else {
+                acc.push({ ...product, count: 1 });
             }
             return acc;
         }, []);
