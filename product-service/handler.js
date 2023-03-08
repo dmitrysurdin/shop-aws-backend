@@ -12,8 +12,6 @@ module.exports.getProductsList = async () => {
             const stockItem = stocks.Items.find(stock => stock.product_id === product.id);
             if (stockItem) {
                 acc.push({ ...product, count: stockItem.count });
-            } else {
-                acc.push({ ...product, count: 1 });
             }
             return acc;
         }, []);
