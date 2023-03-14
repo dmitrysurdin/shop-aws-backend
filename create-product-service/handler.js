@@ -29,6 +29,11 @@ module.exports.createProduct = async (event) => {
         await dynamodb.put(stocksParams).promise();
         return {
             statusCode: 200,
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "Content-Type",
+                "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+            },
             body: JSON.stringify({ message: "Product created successfully" })
         };
     } catch (error) {
