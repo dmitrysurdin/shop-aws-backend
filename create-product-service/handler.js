@@ -4,6 +4,9 @@ const { v4: uuidv4 } = require("uuid");
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 module.exports.createProduct = async (event) => {
+    console.log('Incoming request:', JSON.stringify(event));
+    console.log('Request arguments:', JSON.stringify(event.arguments));
+
     const product = JSON.parse(event.body);
     const id = uuidv4();
     const productsParams = {

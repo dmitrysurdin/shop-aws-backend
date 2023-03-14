@@ -4,7 +4,10 @@ AWS.config.update({ region: "eu-west-1" });
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
-module.exports.getProductsList = async () => {
+module.exports.getProductsList = async (event) => {
+    console.log('Incoming request:', JSON.stringify(event));
+    console.log('Request arguments:', JSON.stringify(event.arguments));
+
     try {
         const products = await dynamodb.scan({ TableName: "products", }).promise();
         const stocks = await dynamodb.scan({ TableName: "stocks", }).promise();
