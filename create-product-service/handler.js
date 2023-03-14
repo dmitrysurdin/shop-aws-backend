@@ -25,6 +25,10 @@ module.exports.createProduct = async (event) => {
     };
 
     try {
+        if (!product.title || !product.description || !product.price || !product.count) {
+            return { statusCode: 400, body: JSON.stringify({ message: "Bad request" }) };
+        }
+
         await dynamodb.put(productsParams).promise();
         await dynamodb.put(stocksParams).promise();
         return {
@@ -39,7 +43,7 @@ module.exports.createProduct = async (event) => {
     } catch (error) {
         console.error(error);
         return {
-            statusCode: 400,
+            statusCode: 500,
             body: JSON.stringify({ message: "Failed to create product" })
         };
     }
