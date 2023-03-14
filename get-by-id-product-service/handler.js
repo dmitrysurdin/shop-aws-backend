@@ -1,16 +1,32 @@
 "use strict";
-const AWS = require('aws-sdk');
-AWS.config.update({ region: 'eu-west-1' });
+const AWS = require("aws-sdk");
+AWS.config.update({ region: "eu-west-1" });
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 module.exports.getProductById = async (event) => {
     const { productId } = event.pathParameters;
-    const products = await dynamodb.scan({ TableName: 'products', }).promise();
-    const stocks = await dynamodb.scan({ TableName: 'stocks', }).promise();
+    const products = await dynamodb.scan({ TableName: "products", }).promise();
+    const stocks = await dynamodb.scan({ TableName: "stocks", }).promise();
     const product = products.Items.find((p) => p.id === productId);
     const stock = stocks.Items.find((p) => p.product_id === productId);
-    const result = {...product, count: stock.count}
+    const result = { ...product, count: stock.count };
+
+    try {
+        if (!products || !stocks) {
+            return {
+                statusCode: 404,
+                body: JSON.stringify({ message: "Products are not found in DB" })
+            };
+        }
+    } catch (error) {
+        console.error(error);
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ message: "An error occurred" })
+        };
+    }
+
 
     try {
         if (!product) {

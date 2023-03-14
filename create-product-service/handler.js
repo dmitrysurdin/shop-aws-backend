@@ -34,7 +34,7 @@ module.exports.createProduct = async (event) => {
     } catch (error) {
         console.error(error);
         return {
-            statusCode: 400,
+            statusCode: 500,
             body: JSON.stringify({ message: "Failed to create product" })
         };
     }
