@@ -1,7 +1,24 @@
 "use strict";
+const AWS = require("aws-sdk");
+AWS.config.update({ region: "eu-west-1" });
 
-module.exports.getProductsList = async () => {
+const dynamodb = new AWS.DynamoDB.DocumentClient();
+
+module.exports.getProductsList = async (event) => {
+    console.log('Incoming request:', JSON.stringify(event));
+    console.log('Request arguments:', JSON.stringify(event.arguments));
+
     try {
+        const products = await dynamodb.scan({ TableName: "products", }).promise();
+        const stocks = await dynamodb.scan({ TableName: "stocks", }).promise();
+        const result = products.Items.reduce((acc, product) => {
+            const stockItem = stocks.Items.find(stock => stock.product_id === product.id);
+            if (stockItem) {
+                acc.push({ ...product, count: stockItem.count });
+            }
+            return acc;
+        }, []);
+
         return {
             statusCode: 200,
             headers: {
@@ -9,26 +26,7 @@ module.exports.getProductsList = async () => {
                 "Access-Control-Allow-Headers": "Content-Type",
                 "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
             },
-            body: JSON.stringify([
-                {
-                    id: 1,
-                    title: "Book1",
-                    description: "The book is good",
-                    price: 1004
-                },
-                {
-                    id: 2,
-                    title: "Book2",
-                    description: 'The book is sad',
-                    price: 1005
-                },
-                {
-                    id: 3,
-                    title: "Book3",
-                    description: "The book is nice",
-                    price: 1005
-                },
-            ])
+            body: JSON.stringify(result)
         };
     } catch (error) {
         console.error(error);

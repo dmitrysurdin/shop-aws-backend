@@ -1,4 +1,4 @@
-service: product-service
+service: create-product-service
 frameworkVersion: '3'
 
 provider:
@@ -13,9 +13,9 @@ provider:
 
 functions:
   hello:
-    handler: handler.getProductsList
+    handler: handler.createProduct
     events:
       - http:
           path: products
-          method: get
+          method: post
           cors: true

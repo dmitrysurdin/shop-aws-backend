@@ -1,31 +1,23 @@
 "use strict";
+const AWS = require("aws-sdk");
+AWS.config.update({ region: "eu-west-1" });
+
+const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 module.exports.getProductById = async (event) => {
-    const { productId } = event.pathParameters;
-    const products = [
-        {
-            id: 1,
-            title: "Book1",
-            description: "The book is good",
-            price: 1004
-        },
-        {
-            id: 2,
-            title: "Book2",
-            description: "The book is sad",
-            price: 1005
-        },
-        {
-            id: 3,
-            title: "Book3",
-            description: "The book is nice",
-            price: 1005
-        },
-    ];
+    console.log('Incoming request:', JSON.stringify(event));
+    console.log('Request arguments:', JSON.stringify(event.arguments));
 
-    const mockProduct = products.find((p) => p.id === productId);
+    const { productId } = event.pathParameters;
+
     try {
-        if (!mockProduct) {
+        const products = await dynamodb.scan({ TableName: "products", }).promise();
+        const stocks = await dynamodb.scan({ TableName: "stocks", }).promise();
+        const product = products.Items.find((p) => p.id === productId);
+        const stock = stocks.Items.find((p) => p.product_id === productId);
+        const result = { ...product, count: stock.count };
+
+        if (!product) {
             return {
                 statusCode: 404,
                 body: JSON.stringify({ message: "Product not found" })
@@ -39,7 +31,7 @@ module.exports.getProductById = async (event) => {
                 "Access-Control-Allow-Headers": "Content-Type",
                 "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
             },
-            body: JSON.stringify(mockProduct)
+            body: JSON.stringify(result)
         };
     } catch (error) {
         console.error(error);
