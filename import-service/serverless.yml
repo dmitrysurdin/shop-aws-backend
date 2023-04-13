@@ -11,8 +11,7 @@ provider:
 iamRoleStatements:
   - Effect: Allow
     Action:
-      - s3:PutObject
-      - s3:GetObject
+      - sqs:SendMessage
     Resource: arn:aws:s3:::import-service-aws/uploaded/*
 
 functions:
@@ -33,3 +32,16 @@ importFileParser:
         rules:
           - prefix: uploaded/
           - suffix: .csv
+
+resources:
+  Resources:
+    MyImportQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: my-import-queue
+  Outputs:
+    MyImportQueueUrl:
+      Value:
+        Ref: MyImportQueue
+      Export:
+        Name: MyImportQueueUrl
