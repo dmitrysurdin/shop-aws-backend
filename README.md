@@ -12,3 +12,4 @@ Get all products:  https://yn3i62tbcf.execute-api.eu-west-1.amazonaws.com/dev/pr
 
 Create a product: https://zrka0tni55.execute-api.eu-west-1.amazonaws.com/dev/products POST
 
+Import product : https://ne701iqmkk.execute-api.eu-west-1.amazonaws.com/dev/import GET
