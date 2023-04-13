@@ -31,7 +31,7 @@ module.exports.handler = async (event) => {
 
             // Send each CSV record to SQS
             sqs.sendMessage({
-                QueueUrl: 'my-import-queue',
+                QueueUrl: 'https://sqs.eu-west-1.amazonaws.com/544468000878/my-import-queue',
                 MessageBody: JSON.stringify(record)
             }, (err, data) => {
                 if (err) {
