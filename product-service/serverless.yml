@@ -19,3 +19,30 @@ functions:
           path: products
           method: get
           cors: true
+  catalogBatchProcess:
+    handler: catalogBatchProcess.handler
+    events:
+      - sqs:
+          arn:
+          batchSize: 5
+
+resources:
+  Resources:
+    createProductTopic:
+      Type: "AWS::SNS::Topic"
+      Properties:
+        DisplayName: "Create Product Topic"
+        TopicName: "createProductTopic"
+    productCreatedSubscription:
+      Type: "AWS::SNS::Subscription"
+      Properties:
+        Protocol: "email"
+        TopicArn: !Ref createProductTopic
+        Endpoint: "dimasurdin@yandex.ru"
+
+iamRoleStatements:
+  - Effect: Allow
+    Action:
+      - sns:Publish
+    Resource:
+      - !Ref createProductTopic
