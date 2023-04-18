@@ -22,6 +22,10 @@ functions:
           path: import
           method: get
           cors: true
+          authorizer:
+            arn: //TODO
+            name: //TODO
+
 
 importFileParser:
   handler: importFileParser.handler
@@ -39,6 +43,14 @@ resources:
       Type: AWS::SQS::Queue
       Properties:
         QueueName: my-import-queue
+  AuthorizerApiGatewayResponse:
+    Type: AWS::ApiGateway::GatewayResponse
+    Properties:
+      ResponseParameters:
+        "gatewayresponse.header.Access-Control-Allow-Origin": "'*'"
+        "gatewayresponse.header.Access-Control-Allow-Headers": "'*'"
+      ResponseType: //TODO
+      RestApiId: //TODO
   Outputs:
     MyImportQueueUrl:
       Value:
