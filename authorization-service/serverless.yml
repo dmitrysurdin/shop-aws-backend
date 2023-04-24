@@ -1,4 +1,4 @@
-service: create-product-service
+service: authorization-service
 frameworkVersion: '3'
 
 provider:
@@ -11,5 +11,3 @@ provider:
 functions:
   basicAuthorizer:
     handler: handler.basicAuthorizer
-    environment: //TODO
-

@@ -23,8 +23,8 @@ functions:
           method: get
           cors: true
           authorizer:
-            arn: //TODO
-            name: //TODO
+            arn: arn:aws:lambda:eu-west-1:544468000878:function:authorization-service-dev-basicAuthorizer
+            name: authorization-service-dev-basicAuthorizer
 
 
 importFileParser:
@@ -49,8 +49,7 @@ resources:
       ResponseParameters:
         "gatewayresponse.header.Access-Control-Allow-Origin": "'*'"
         "gatewayresponse.header.Access-Control-Allow-Headers": "'*'"
-      ResponseType: //TODO
-      RestApiId: //TODO
+      RestApiId: 4g9rm6
   Outputs:
     MyImportQueueUrl:
       Value:
