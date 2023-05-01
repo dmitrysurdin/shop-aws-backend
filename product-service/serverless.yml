@@ -37,7 +37,7 @@ resources:
       Type: "AWS::SNS::Subscription"
       Properties:
         Protocol: "email"
-        TopicArn: !Ref createProductTopic
+        TopicArn: {"Ref": "createProductTopic"}
         Endpoint: "dimasurdin@yandex.ru"
 
 iamRoleStatements:
@@ -45,4 +45,4 @@ iamRoleStatements:
     Action:
       - sns:Publish
     Resource:
-      - !Ref createProductTopic
+      - {"Ref": "createProductTopic"}
