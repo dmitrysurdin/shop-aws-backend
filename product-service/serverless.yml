@@ -8,8 +8,11 @@ provider:
   region: eu-west-1
   cors: true
   environment:
-    PRODUCTS_TABLE: products
-    STOCKS_TABLE: stocks
+    PG_HOST: lesson8-instance.cqoezawlv15v.eu-west-1.rds.amazonaws.com
+    PG_PORT: 5432
+    PG_DATABASE: lesson8
+    PG_USERNAME: postgres
+    PG_PASSWORD: XjNMkHghjmMANzkVpocQ
 
 functions:
   hello:
@@ -46,3 +49,5 @@ iamRoleStatements:
       - sns:Publish
     Resource:
       - !Ref createProductTopic
+
+
