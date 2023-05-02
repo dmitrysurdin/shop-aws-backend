@@ -22,6 +22,10 @@ functions:
           path: import
           method: get
           cors: true
+          authorizer:
+            arn: arn:aws:lambda:eu-west-1:544468000878:function:authorization-service-dev-basicAuthorizer
+            name: authorization-service-dev-basicAuthorizer
+
 
 importFileParser:
   handler: importFileParser.handler
@@ -39,6 +43,13 @@ resources:
       Type: AWS::SQS::Queue
       Properties:
         QueueName: my-import-queue
+  AuthorizerApiGatewayResponse:
+    Type: AWS::ApiGateway::GatewayResponse
+    Properties:
+      ResponseParameters:
+        "gatewayresponse.header.Access-Control-Allow-Origin": "'*'"
+        "gatewayresponse.header.Access-Control-Allow-Headers": "'*'"
+      RestApiId: 4g9rm6
   Outputs:
     MyImportQueueUrl:
       Value:

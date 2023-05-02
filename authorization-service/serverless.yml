@@ -1,0 +1,13 @@
+service: authorization-service
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  region: eu-west-1
+  cors: true
+
+functions:
+  basicAuthorizer:
+    handler: handler.basicAuthorizer
